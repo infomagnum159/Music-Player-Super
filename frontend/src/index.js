@@ -10,11 +10,13 @@ import './index.css';
 import history from "./history";
 import mainReducer from "./store/reducers/mainReducer";
 import theme from "./theme";
+import usersReducer from "./store/reducers/usersReducer";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
-    main: mainReducer
+    main: mainReducer,
+    users: usersReducer
 });
 
 const store = createStore(

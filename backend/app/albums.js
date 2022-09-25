@@ -4,6 +4,7 @@ const multer = require('multer');
 const {nanoid} = require('nanoid');
 const Album = require('../models/Album');
 const config = require('../config');
+const auth = require("../middleware/auth");
 
 const router = express.Router();
 
@@ -25,7 +26,7 @@ router.get('/', async (req, res) => {
             query.artist = req.query.artist;
         }
         console.log(query);
-        const albums = await Album.find(query).populate('artist', 'name');
+        const albums = await Album.find(query).populate('artist', 'name').sort({"year": 1});
         res.send(albums);
     } catch (e) {
         res.sendStatus(500);
@@ -45,7 +46,7 @@ router.get('/:id', async (req, res) => {
 });
 
 
-router.post('/', upload.single('image'), async (req, res) => {
+router.post('/', auth, upload.single('image'), async (req, res) => {
     if (!req.body.name || !req.body.artist) {
         return res.status(400).send('Data Not valid');
     }
@@ -53,7 +54,8 @@ router.post('/', upload.single('image'), async (req, res) => {
     const albumData = {
         name: req.body.name,
         artist: req.body.artist,
-        year: req.body.year || null
+        year: req.body.year || null,
+        user: req.user._id,
     }
 
     if (req.file) {

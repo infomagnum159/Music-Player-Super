@@ -1,33 +1,38 @@
 const express = require('express');
-const User = require('../models/User');
 const router = express.Router();
-const Track = require('../models/Track');
-const TrackHistories = require('../models/TrackHistory')
+const TrackHistories = require('../models/TrackHistory');
+const dayjs = require('dayjs');
+const auth = require('../middleware/auth')
 
 
-router.post('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
+    const history = await TrackHistories.find(req.user._id).populate('track', 'name').populate('artist', 'name').sort({datetime: -1});
     try {
-        const token = req.get('Authorization');
+        res.send(history);
+    } catch (e) {
+        res.status(500).send(e);
+    }
+})
+router.post('/', auth, async (req, res) => {
+    if (!req.body.artist || !req.body.track) {
+        return res.status(400).send('Data Not valid');
+    }
+    const date = dayjs(new Date());
+    const historyData = {
+        datetime: date,
+        track: req.body.track,
+        user: req.user._id,
+        artist: req.body.artist,
+    }
 
-        if (!token) {
-            return res.status(401).send({error: "No authorization header!"});
-        }
-        const user = await User.findOne({token});
-        
-        if (!user) {
-            return res.status(401).send({error: "Token is incorrect!"});
-        }
-        const track = await Track.findOne({_id: req.body.track});
-
-        if (!track) {
-            return res.status(404).send({error: "Track is not found!"});
-        }
-        const trackHistory = new TrackHistories({user,track, datetime: new Date().toISOString()});
-        await trackHistory.save();
-        return res.send(trackHistory);
-    } catch (error) {
-        return res.status(400).send(error);
+    const history = new TrackHistories(historyData);
+    try {
+        await history.save();
+        res.send(history);
+    } catch (e) {
+        res.status(500).send(e);
     }
 });
+
 
 module.exports = router;

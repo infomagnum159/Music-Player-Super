@@ -4,6 +4,7 @@ const path = require('path');
 const {nanoid} = require('nanoid');
 const Artist = require('../models/Artist');
 const config = require("../config");
+const auth = require("../middleware/auth");
 
 const router = express.Router();
 
@@ -28,7 +29,7 @@ router.get('/', async (req, res) => {
 
 });
 
-router.post('/', upload.single('photo'), async (req, res) => {
+router.post('/', auth,  upload.single('photo'), async (req, res) => {
     if (!req.body.name) {
         return res.status(400).send('Data Not valid');
     }
@@ -36,6 +37,7 @@ router.post('/', upload.single('photo'), async (req, res) => {
     const artistData = {
         name: req.body.name,
         information: req.body.information || null,
+        user: req.user._id,
     }
 
     if (req.file) {

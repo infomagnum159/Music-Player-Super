@@ -1,6 +1,7 @@
 const express = require('express');
 const Track = require('../models/Track');
 const Album = require('../models/Album')
+const auth = require("../middleware/auth");
 const router = express.Router();
 
 router.get('/',async (req, res) => {
@@ -24,7 +25,7 @@ router.get('/',async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     if (!req.body.name || !req.body.album) {
         return res.status(400).send('Data Not valid');
     }
@@ -32,7 +33,9 @@ router.post('/', async (req, res) => {
     const trackData = {
         name: req.body.name,
         album: req.body.album,
-        lasting: req.body.lasting || null
+        lasting: req.body.lasting || null,
+        trackNumber: parseInt(req.body.trackNumber),
+        user: req.user._id,
     }
 
 

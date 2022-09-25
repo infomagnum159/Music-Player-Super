@@ -12,7 +12,12 @@ const AlbumSchema = new mongoose.Schema({
         required: true
     },
     year: String,
-    image: String
+    image: String,
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
 });
 
 AlbumSchema.plugin(idValidator, {message: 'Bad ID value for {PATH}'});

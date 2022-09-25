@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 
 import {apiUrl} from "../../config";
 import imageNotAvailable from "../../assets/images/not_available.png";
+import PropTypes from 'prop-types';
 
 const MainItem = ({name, information, id, image}) => {
 
@@ -36,12 +37,11 @@ const MainItem = ({name, information, id, image}) => {
     );
 };
 
-// MainItem.propTypes = {
-//     name: PropTypes.string.isRequired,
-//     information: PropTypes.string.isRequired,
-//     id: PropTypes.string.isRequired,
-//     image: PropTypes.string,
-//     // count: PropTypes.number.isRequired,
-// };
+MainItem.propTypes = {
+    name: PropTypes.string.isRequired,
+    information: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+    image: PropTypes.string,
+};
 
 export default MainItem;

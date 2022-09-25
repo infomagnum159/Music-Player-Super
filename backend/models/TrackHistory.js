@@ -14,7 +14,13 @@ const TrackHistorySchema = new Schema({
     datetime: {
         type: Date,
         required: true
-    }
+    },
+    artist: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Artist',
+        required: true,
+    },
+
 });
 
 const TrackHistory = mongoose.model('TrackHistory', TrackHistorySchema);

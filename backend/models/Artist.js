@@ -8,6 +8,11 @@ const ArtistSchema = new mongoose.Schema({
     },
     information: String,
     photo: String,
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
 });
 
 ArtistSchema.plugin(idValidator, {message: 'Bad ID value for {PATH}'});

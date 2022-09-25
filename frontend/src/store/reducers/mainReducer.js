@@ -1,8 +1,15 @@
 import {
     FETCH_ALBUM_FAILURE,
     FETCH_ALBUM_REQUEST,
-    FETCH_ALBUM_SUCCESS, FETCH_ARTIST_FAILURE, FETCH_ARTIST_REQUEST, FETCH_ARTIST_SUCCESS,
-   FETCH_TRACK_FAILURE, FETCH_TRACK_REQUEST, FETCH_TRACK_SUCCESS
+    FETCH_ALBUM_SUCCESS,
+    FETCH_ARTIST_FAILURE,
+    FETCH_ARTIST_REQUEST,
+    FETCH_ARTIST_SUCCESS, FETCH_HISTORY_FAILURE,
+    FETCH_HISTORY_REQUEST,
+    FETCH_HISTORY_SUCCESS,
+    FETCH_TRACK_FAILURE,
+    FETCH_TRACK_REQUEST,
+    FETCH_TRACK_SUCCESS
 } from "../actions/mainActions";
 
 
@@ -35,6 +42,12 @@ const mainReducer = (state = initialState, action) => {
         case FETCH_TRACK_SUCCESS:
             return {...state,  singleLoading: false, tracks: action.payload};
         case FETCH_TRACK_FAILURE:
+            return {...state, singleLoading: false};
+        case FETCH_HISTORY_REQUEST:
+            return {...state, singleLoading: true};
+        case FETCH_HISTORY_SUCCESS:
+            return {...state,  singleLoading: false, history: action.payload};
+        case FETCH_HISTORY_FAILURE:
             return {...state, singleLoading: false};
         default:
             return state;

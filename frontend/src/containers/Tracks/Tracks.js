@@ -1,21 +1,27 @@
 import React, {useEffect} from 'react';
-import {fetchTracks} from "../../store/actions/mainActions";
+import {createTrackHistory, fetchTracks} from "../../store/actions/mainActions";
 import {useDispatch, useSelector} from "react-redux";
 import {Card, CardContent, Grid, Typography} from "@mui/material";
+import Button from "@mui/material/Button";
 
 
 const Tracks = () => {
     const dispatch = useDispatch();
     const paramsURL = new URLSearchParams(document.location.search.substring(1));
     const tracks = useSelector(state => state.main.tracks);
+    const token = useSelector(state => state.users.user);
     useEffect(() => {
-        if (paramsURL.get('album')) {
-            dispatch(fetchTracks(paramsURL.get('album')));
+        if (paramsURL.get('album') && token) {
+            dispatch(fetchTracks(paramsURL.get('album'), token.token));
         } else {
             dispatch(fetchTracks());
         }
     }, [dispatch]);
 
+    const buttonHandler = id => {
+        console.log(id);
+        dispatch(createTrackHistory(token.token, id));
+    };
 
     return (
         <>
@@ -40,6 +46,14 @@ const Tracks = () => {
                                         <Typography variant="body1">Длина трека: {track.lasting}</Typography>
                                     </CardContent>
                                 </Card>
+                            </Grid>
+                            <Grid item>
+                                <Button
+                                    type="button"
+                                    onClick={() => buttonHandler(track._id)}
+                                >
+                                    Play
+                                </Button>
                             </Grid>
                         </Grid>
                     )))}

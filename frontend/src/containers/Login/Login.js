@@ -49,13 +49,11 @@ const Login = () => {
 
     const inputChangeHandler = e => {
         const {name, value} = e.target;
-
         setUser(prev => ({...prev, [name]: value}));
     };
 
     const submitFormHandler = e => {
         e.preventDefault();
-
         dispatch(loginUser({...user}));
     };
 
