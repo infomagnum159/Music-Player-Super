@@ -6,7 +6,7 @@ const auth = require('../middleware/auth')
 
 
 router.get('/', auth, async (req, res) => {
-    const history = await TrackHistories.find(req.user._id).populate('track', 'name').populate('artist', 'name').sort({datetime: -1});
+    const history = await TrackHistories.find(req.user._id).populate('track', 'name').sort({datetime: -1});
     try {
         res.send(history);
     } catch (e) {
@@ -14,7 +14,7 @@ router.get('/', auth, async (req, res) => {
     }
 })
 router.post('/', auth, async (req, res) => {
-    if (!req.body.artist || !req.body.track) {
+    if (!req.body.track) {
         return res.status(400).send('Data Not valid');
     }
     const date = dayjs(new Date());
@@ -22,7 +22,6 @@ router.post('/', auth, async (req, res) => {
         datetime: date,
         track: req.body.track,
         user: req.user._id,
-        artist: req.body.artist,
     }
 
     const history = new TrackHistories(historyData);

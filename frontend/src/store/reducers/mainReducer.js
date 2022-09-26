@@ -28,7 +28,7 @@ const mainReducer = (state = initialState, action) => {
         case FETCH_ARTIST_REQUEST:
             return {...state, fetchLoading: true};
         case FETCH_ARTIST_SUCCESS:
-            return {...state,  fetchLoading: false, artists: action.payload};
+            return {...state, fetchLoading: false, artists: action.payload};
         case FETCH_ARTIST_FAILURE:
             return {...state, fetchLoading: false};
         case FETCH_ALBUM_REQUEST:

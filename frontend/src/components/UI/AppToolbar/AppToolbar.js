@@ -7,6 +7,7 @@ import {useSelector} from "react-redux";
 import 'react-toastify/dist/ReactToastify.css';
 import UserMenu from "./Menu/UserMenu";
 import {ToastContainer} from "react-toastify";
+import Button from "@mui/material/Button";
 
 const useStyles = makeStyles()(theme => ({
   mainLink: {
@@ -19,6 +20,9 @@ const useStyles = makeStyles()(theme => ({
   staticToolbar: {
     marginBottom: theme.spacing(2)
   },
+  back: {
+    backgroundColor: '#6a1b9a'
+  }
 }));
 
 const AppToolbar = () => {
@@ -27,7 +31,7 @@ const AppToolbar = () => {
 
   return (
       <>
-        <AppBar position="fixed">
+        <AppBar position="fixed" className={classes.back}>
           <ToastContainer/>
           <Toolbar>
             <Grid container justifyContent="space-between" alignItems="center">
@@ -38,9 +42,9 @@ const AppToolbar = () => {
                   </Link>
                 </Typography>
               </Grid>
+              {user ? <Button className={classes.mainLink} component={Link} to="/track_history"> Track History</Button> : null}
               <Grid item>
                 {user ? <UserMenu user={user}/> : <Anonymous/>}
-
               </Grid>
 
               {/*<Button component={Link} to="/register" color="inherit">*/}

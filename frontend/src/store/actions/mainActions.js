@@ -70,18 +70,15 @@ export const fetchAlbums = id => {
     };
 };
 
-export const fetchTracks = (id, token) => {
+export const fetchTracks = (id) => {
     return async dispatch => {
         let response = null;
         try {
             dispatch(fetchTrackRequest());
             if (id) {
-                response = await axiosApi.get('/tracks?album=' + id, {
-                    headers: {
-                        'Authorization': token,
-                    }
-                });
-            } else {
+                response = await axiosApi.get('/tracks?album=' + id );
+            }
+            else {
                 response = await axiosApi.get('/tracks');
             }
             dispatch(fetchTrackSuccess(response.data));
@@ -97,12 +94,11 @@ export const createTrackHistory = (token, track) => {
         try {
             dispatch(createTrackHistoryRequest());
             const response = await axiosApi.post('/track_history',{
-                track: track,
+                track: track
             },{
                 headers: {
                     'Authorization': token,
                 },
-
             });
             dispatch(createTrackHistorySuccess(response.data));
         } catch (e) {
@@ -114,12 +110,12 @@ export const createTrackHistory = (token, track) => {
 export const fetchHistory = () => {
     return async (dispatch, getState) => {
         try {
-            dispatch(fetchHistoryRequest());
-            const response = await axiosApi.get('/track_history',{
-                headers: {
+            const headers = {
                     'Authorization': getState().users.user && getState().users.user.token,
-                },
-            });
+                }
+            dispatch(fetchHistoryRequest());
+            const response = await axiosApi('/track_history',{
+             headers});
             dispatch(fetchHistorySuccess(response.data));
         } catch (e) {
             dispatch(fetchHistoryFailure());

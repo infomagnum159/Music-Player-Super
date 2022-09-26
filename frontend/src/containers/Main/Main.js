@@ -1,8 +1,9 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchArtists} from "../../store/actions/mainActions";
-import {CircularProgress, Grid, Typography} from "@mui/material";
+import {Grid, Typography} from "@mui/material";
 import MainItem from "../../components/MainItem/MainItem";
+import Spinner from "../../components/UI/Spinner/Spinner";
 
 const Main = () => {
     const dispatch = useDispatch();
@@ -27,7 +28,7 @@ const Main = () => {
                         {fetchLoading ? (
                             <Grid container justifyContent="center" alignItems="center">
                                 <Grid item>
-                                    <CircularProgress/>
+                                    <Spinner/>
                                 </Grid>
                             </Grid>
                         ) : artists.map(artist => (

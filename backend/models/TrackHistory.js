@@ -15,11 +15,6 @@ const TrackHistorySchema = new Schema({
         type: Date,
         required: true
     },
-    artist: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Artist',
-        required: true,
-    },
 
 });
 
